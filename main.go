@@ -20,8 +20,8 @@ func check(e error) {
 
 func main() {
 
-	dbInput := flag.String("in", "", "InputDB")
-	dbOutput := flag.String("out", "", "OutputDB")
+	dbInput := flag.String("in", "", "InputDB (SQLite3, see scheme)")
+	dbOutput := flag.String("out", "", "OutputDB (SQLite3, see scheme)")
 
 	flag.Parse()
 
@@ -105,13 +105,13 @@ func insertWord(db *sql.DB, Word string) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	query, err := tx.Prepare("insert into words(word, categoryid) values(?, ?)")
+	query, err := tx.Prepare("insert into words(word, categoryid, userid) values(?, ?, ?)")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer query.Close()
 
-	_, err = query.Exec(Word, 0)
+	_, err = query.Exec(Word, -1, 0)
 	if err != nil {
 		log.Println(err)
 		log.Fatal(err)
