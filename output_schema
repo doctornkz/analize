@@ -1,0 +1,8 @@
+CREATE TABLE "words" (
+    "word" TEXT NOT NULL DEFAULT (' '),
+    "categoryid" INTEGER NOT NULL DEFAULT (0)
+);
+CREATE TABLE "categories" (
+    "categoryid" INTEGER NOT NULL DEFAULT (0),
+    "name" TEXT NOT NULL DEFAULT (' ')
+);
