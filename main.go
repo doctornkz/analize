@@ -75,7 +75,7 @@ func main() {
 func readMessages(db *sql.DB, dbOut *sql.DB) {
 	messagesRows := getRows(db, "messages")
 	importBar := pb.StartNew(messagesRows)
-	wordsRows := getRows(dbOut, "words")
+
 	rows, err := db.Query("select text from messages")
 	currentCount := 0
 	check(err)
@@ -84,9 +84,7 @@ func readMessages(db *sql.DB, dbOut *sql.DB) {
 		var text string
 		err = rows.Scan(&text)
 		check(err)
-
 		for _, Word := range strings.Split(text, " ") {
-
 			Word = stemming(Word)
 			if checkWord(dbOut, Word) == -10 {
 				insertWord(dbOut, Word)
@@ -96,7 +94,9 @@ func readMessages(db *sql.DB, dbOut *sql.DB) {
 		importBar.Increment()
 	}
 	importBar.Finish()
+	wordsRows := getRows(dbOut, "words")
 	fmt.Printf("%d rows are processed from Db In. %d words in Db Out.", messagesRows, wordsRows)
+	fmt.Println()
 	err = rows.Err()
 	check(err)
 }
